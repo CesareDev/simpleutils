@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.14)
+set(${CMAKE_EXPORT_COMPILE_COMMANDS} ON)
+
+project(simpleutils)
+add_subdirectory(test)
+
+set(LIB_SRC_FILE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Log/Logger.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Tasks/Scheduler.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Tasks/Time.cpp
+)
+
+add_library(${PROJECT_NAME} ${LIB_SRC_FILE})
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(${PROJECT_NAME} PUBLIC pthread)

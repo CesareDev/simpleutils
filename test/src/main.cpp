@@ -15,10 +15,10 @@ int main()
     simpleutils::Tasks::Scheduler scheduler1 {};
     simpleutils::Tasks::Scheduler scheduler2 {};
 
-    scheduler1.Start(task1, simpleutils::Tasks::Seconds(15));
-    scheduler2.Start(task2, simpleutils::Tasks::Seconds(15));
+    scheduler1.Start(task1, simpleutils::Tasks::Milliseconds(500));
+    scheduler2.Start(task2, simpleutils::Tasks::Milliseconds(500));
 
-    simpleutils::Tasks::Sleep(simpleutils::Tasks::Minutes(1));
+    simpleutils::Tasks::Sleep(simpleutils::Tasks::Seconds(2));
 
     return 0;
 }

@@ -12,5 +12,6 @@ namespace simpleutils::Config
 
     bool JsonLoader::LoadFromFile(const std::string& filePath)
     {
+        return true;
     }
 } // namespace simpleutils::Config

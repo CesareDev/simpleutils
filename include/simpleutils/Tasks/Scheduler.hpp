@@ -1,6 +1,7 @@
 #ifndef SIMPLEUTILS_SCHEDULER_HPP
 #define SIMPLEUTILS_SCHEDULER_HPP
 
+#include <simpleutils/Tasks/Task.hpp>
 #include <simpleutils/Tasks/Time.hpp>
 
 #include <thread>
@@ -10,8 +11,6 @@
 
 namespace simpleutils::Tasks
 {
-    typedef std::function<void()> Task;
-
     class Scheduler
     {
         public:
@@ -19,6 +18,7 @@ namespace simpleutils::Tasks
             ~Scheduler();
 
             void Start(const Task& task, const Duration& interval);
+            void StartFor(const Task& task, const Duration& interval, uint32_t repetition);
             void Stop();
 
         private:

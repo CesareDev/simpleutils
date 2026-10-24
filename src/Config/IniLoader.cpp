@@ -38,6 +38,8 @@ namespace simpleutils::Config
         std::string line;
         std::string currentSection;
 
+        m_Configs.clear();
+
         while (std::getline(file, line))
         {
             line = trim(line);

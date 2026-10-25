@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.14)
 set(TEST_SRC_FILE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Config/TestIniLoader.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Tasks/TestScheduler.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Tasks/TestThreadPool.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
 )
 

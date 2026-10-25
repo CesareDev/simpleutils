@@ -3,17 +3,33 @@
 
 #include <simpleutils/Tasks/Task.hpp>
 
+#include <queue>
+#include <vector>
+#include <thread>
+#include <mutex>
+#include <atomic>
+#include <condition_variable>
+
 namespace simpleutils::Tasks
 {
     class ThreadPool
     {
         public:
-            ThreadPool();
+            explicit ThreadPool(size_t poolSize);
             ~ThreadPool();
 
-            void Submit(const Task& task);
+            bool Submit(const Task& task);
+            void Stop();
 
         private:
+            void workerLoop();
+
+        private:
+            std::queue<Task> m_Tasks {};
+            std::vector<std::thread> m_Workers {};
+            std::mutex m_QueueMutex {};
+            std::condition_variable m_Condition {};
+            bool m_Stop {};
     };
 } // namespace simpleutils::Tasks
 

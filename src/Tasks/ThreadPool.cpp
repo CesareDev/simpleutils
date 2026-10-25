@@ -4,12 +4,12 @@
 
 namespace simpleutils::Tasks
 {
-    ThreadPool::ThreadPool(size_t poolSize)
+    ThreadPool::ThreadPool(std::size_t poolSize)
     {
         if (poolSize == 0)
             throw std::invalid_argument("ThreadPool size must be greater than 0");
 
-        for (size_t i {}; i < poolSize; ++i)
+        for (std::size_t i {}; i < poolSize; ++i)
         {
             m_Workers.emplace_back([this] {
                 workerLoop();

@@ -18,7 +18,7 @@ namespace simpleutils::Tasks
             ~Scheduler();
 
             void Start(const Task& task, const Duration& interval);
-            void StartFor(const Task& task, const Duration& interval, uint32_t repetition);
+            void StartFor(const Task& task, const Duration& interval, std::uint32_t repetition);
             void Stop();
 
         private:

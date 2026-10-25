@@ -27,14 +27,14 @@ namespace simpleutils::Tasks
         });
     }
 
-    void Scheduler::StartFor(const Task& task, const Duration& interval, uint32_t repetition)
+    void Scheduler::StartFor(const Task& task, const Duration& interval, std::uint32_t repetition)
     {
         if (m_IsRunnig) return;
 
         m_IsRunnig = true;
         
         m_Thread = std::thread([this, task, intervalValue = interval.ToChrono(), repetition]() {
-            for (uint32_t rep {}; rep < repetition && m_IsRunnig; ++rep)
+            for (std::uint32_t rep {}; rep < repetition && m_IsRunnig; ++rep)
             {
                 std::unique_lock<std::mutex> lock(m_ConditionVarMutex);
                 

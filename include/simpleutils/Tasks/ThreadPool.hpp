@@ -15,9 +15,10 @@ namespace simpleutils::Tasks
     class ThreadPool
     {
         public:
-            explicit ThreadPool(std::size_t poolSize);
+            ThreadPool();
             ~ThreadPool();
 
+            bool Create(std::size_t poolSize);
             bool Submit(const Task& task);
             void Stop();
 

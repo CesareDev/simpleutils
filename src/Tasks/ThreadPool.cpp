@@ -4,10 +4,19 @@
 
 namespace simpleutils::Tasks
 {
-    ThreadPool::ThreadPool(std::size_t poolSize)
+    ThreadPool::ThreadPool()
+    {
+    }
+
+    ThreadPool::~ThreadPool()
+    {
+        Stop();
+    }
+
+    bool ThreadPool::Create(std::size_t poolSize)
     {
         if (poolSize == 0)
-            throw std::invalid_argument("ThreadPool size must be greater than 0");
+            return false;
 
         for (std::size_t i {}; i < poolSize; ++i)
         {
@@ -15,11 +24,8 @@ namespace simpleutils::Tasks
                 workerLoop();
             });
         }
-    }
 
-    ThreadPool::~ThreadPool()
-    {
-        Stop();
+        return true;
     }
 
     bool ThreadPool::Submit(const Task& task)

@@ -1,6 +1,8 @@
 #ifndef SIMPLEUTILS_SOCKET_HPP
 #define SIMPLEUTILS_SOCKET_HPP
 
+#include <simpleutils/Net/Endpoint.hpp>
+
 #include <cstddef>
 #include <string>
 
@@ -19,9 +21,12 @@ namespace simpleutils::Net
             virtual std::size_t Receive(void* buffer, std::size_t capacity) = 0;
 
         protected:
-            bool resolveIp(const std::string& address, int port);
-            bool resolveHostname(const std::string& address, int port);
-            bool resolveInterface(const std::string& address, int port);
+            Endpoint resolve(const std::string& address, int port);
+
+        private:
+            Endpoint resolveIp(const std::string& address, int port);
+            Endpoint resolveHostname(const std::string& address, int port);
+            Endpoint resolveInterface(const std::string& address, int port);
 
         protected:
             int m_FileDescriptor { -1 };

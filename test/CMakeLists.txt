@@ -4,6 +4,8 @@ set(TEST_SRC_FILE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Config/TestIniLoader.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Tasks/TestScheduler.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Tasks/TestThreadPool.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/TestSocket.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/TestBuffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
 )
 

@@ -4,28 +4,22 @@
 #include <simpleutils/Tasks/Time.hpp>
 #include <simpleutils/Log/Logger.hpp>
 
-struct SuiteHelper
-{
-    SuiteHelper()  { std::cout << ">>> SUITE: ThreadPoolTests <<<" << std::endl; }
-    ~SuiteHelper() { std::cout << ">>> SUITE: ThreadPoolTests <<<" << std::endl; }
-};
-
-BOOST_FIXTURE_TEST_SUITE(ThreadPoolTests, SuiteHelper)
+BOOST_AUTO_TEST_SUITE(ThreadPoolTests)
 
 BOOST_AUTO_TEST_CASE(TestInvalidSize)
 {
-    std::cout << "CASE: TestInvalidSize [START]" << std::endl;
+    std::cout << "SUITE: ThreadPoolTests" << std::endl;
+    std::cout << "CASE: TestInvalidSize" << std::endl;
 
     simpleutils::Tasks::ThreadPool pool;
     auto res = pool.Create(0);
     BOOST_CHECK(!res);
-
-    std::cout << "CASE: TestInvalidSize [END]" << std::endl;
 }
 
 BOOST_AUTO_TEST_CASE(TestSubmit)
 {
-    std::cout << "CASE: TestSubmit [START]" << std::endl;
+    std::cout << "SUITE: ThreadPoolTests" << std::endl;
+    std::cout << "CASE: TestSubmit" << std::endl;
 
     int counters[6] {};
     simpleutils::Tasks::Task tasks[6] {};
@@ -49,8 +43,6 @@ BOOST_AUTO_TEST_CASE(TestSubmit)
     {
         BOOST_CHECK_EQUAL(counters[i], i);
     }
-
-    std::cout << "CASE: TestSubmit [END]" << std::endl;
 }
 
 BOOST_AUTO_TEST_SUITE_END()

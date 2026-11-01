@@ -2,6 +2,7 @@
 #define SIMPLEUTILS_SOCKET_HPP
 
 #include <simpleutils/Net/Endpoint.hpp>
+#include <simpleutils/Net/Packet.hpp>
 
 #include <cstddef>
 #include <string>
@@ -11,14 +12,19 @@ namespace simpleutils::Net
     class Socket
     {
         public:
-            Socket();
+            Socket() = default;
             virtual ~Socket();
 
             Socket(const Socket& socket) = delete;
             Socket& operator=(const Socket&) = delete;
 
-            virtual std::size_t Send(const void* data, std::size_t size) = 0;
-            virtual std::size_t Receive(void* buffer, std::size_t capacity) = 0;
+            Socket(Socket&& other) noexcept;
+            Socket& operator=(Socket&& other) noexcept;
+
+            virtual bool Send(const Packet& packet) = 0;
+            virtual Packet Receive() = 0;
+
+            Endpoint GetLocalEndpoint() const;
 
         protected:
             Endpoint resolve(const std::string& address, int port);

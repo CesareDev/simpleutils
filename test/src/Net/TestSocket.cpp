@@ -2,17 +2,11 @@
 
 #include <simpleutils/Net/Socket.hpp>
 
-struct SuiteHelper
-{
-    SuiteHelper()  { std::cout << ">>> SUITE: SocketTests <<<" << std::endl; }
-    ~SuiteHelper() { std::cout << ">>> SUITE: SocketTests <<<" << std::endl; }
-};
-
-class TestSocket : simpleutils::Net::Socket
+class TestSocket : public simpleutils::Net::Socket
 {
     public:
-        std::size_t Send(const void* data, std::size_t size) override { return 0; }
-        std::size_t Receive(void* buffer, std::size_t capacity) override { return 0; }
+        bool Send(const simpleutils::Net::Packet& packet) override { return false; }
+        simpleutils::Net::Packet Receive() override { return simpleutils::Net::Packet(); }
 
         simpleutils::Net::Endpoint Resolve(const std::string& address, int port)
         {
@@ -20,11 +14,12 @@ class TestSocket : simpleutils::Net::Socket
         }
 };
 
-BOOST_FIXTURE_TEST_SUITE(SocketTests, SuiteHelper)
+BOOST_AUTO_TEST_SUITE(SocketTests)
 
 BOOST_AUTO_TEST_CASE(TestAddressSolver)
 {
-    std::cout << "CASE: TestAddressSolver [START]" << std::endl;
+    std::cout << "SUITE: SocketTests" << std::endl;
+    std::cout << "CASE: TestAddressSolver" << std::endl;
     
     TestSocket socket {};
     
@@ -42,8 +37,6 @@ BOOST_AUTO_TEST_CASE(TestAddressSolver)
 
     simpleutils::Net::Endpoint epAddr = socket.Resolve("foo", 12345);
     BOOST_CHECK(!epAddr.isValid);
-
-    std::cout << "CASE: TestAddressSolver [END]" << std::endl;
 }
 
 BOOST_AUTO_TEST_SUITE_END()

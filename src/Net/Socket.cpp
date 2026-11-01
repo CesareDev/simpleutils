@@ -6,22 +6,54 @@
 #include <stdexcept>
 #include <ifaddrs.h>
 #include <netdb.h>
+#include <utility>
 
 namespace simpleutils::Net
 {
-    Socket::Socket()
-    {
-    }
-
     Socket::~Socket()
     {
         if (m_FileDescriptor >= 0)
             close(m_FileDescriptor);            
     }
 
+    Socket::Socket(Socket&& other) noexcept
+        : m_FileDescriptor(std::exchange(other.m_FileDescriptor, -1))
+    {
+    }
+
+    Socket& Socket::operator=(Socket&& other) noexcept
+    {
+        if (this != &other)
+        {
+            if (m_FileDescriptor >= 0)
+                close(m_FileDescriptor);
+
+            m_FileDescriptor = std::exchange(other.m_FileDescriptor, -1);
+        }
+
+        return *this;
+    }
+
+    Endpoint Socket::GetLocalEndpoint() const
+    {
+        Endpoint endpoint {};
+        
+        if (m_FileDescriptor < 0)
+            return endpoint;
+
+        if (getsockname(m_FileDescriptor, reinterpret_cast<sockaddr*>(&endpoint.addr), &endpoint.addrLength) < 0)
+        {
+            return {};
+        }
+
+        endpoint.isValid = true;
+
+        return endpoint;
+    }
+
     Endpoint Socket::resolve(const std::string& address, int port)
     {
-        if (port <= 0 || port > 65535)
+        if (port < 0 || port > 65535)
             return {};
 
         Endpoint endpoint = resolveIp(address, port);

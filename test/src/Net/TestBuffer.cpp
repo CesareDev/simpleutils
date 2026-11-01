@@ -2,12 +2,6 @@
 
 #include <simpleutils/Net/Buffer.hpp>
 
-struct SuiteHelper
-{
-    SuiteHelper()  { std::cout << ">>> SUITE: BufferTests <<<" << std::endl; }
-    ~SuiteHelper() { std::cout << ">>> SUITE: BufferTests <<<" << std::endl; }
-};
-
 class Test : public simpleutils::Net::Serializable
 {
     public:
@@ -35,11 +29,12 @@ class Test : public simpleutils::Net::Serializable
         std::string memberString {};
 };
 
-BOOST_FIXTURE_TEST_SUITE(BufferTests, SuiteHelper)
+BOOST_AUTO_TEST_SUITE(BufferTests)
 
 BOOST_AUTO_TEST_CASE(TestWriteRead)
 {
-    std::cout << "CASE: TestWriteRead [START]" << std::endl;
+    std::cout << "SUITE: BufferTests" << std::endl;
+    std::cout << "CASE: TestWriteRead" << std::endl;
 
     simpleutils::Net::Buffer buffer {};
     
@@ -48,13 +43,12 @@ BOOST_AUTO_TEST_CASE(TestWriteRead)
     BOOST_CHECK(buffer.Write(w_value));
     BOOST_CHECK(buffer.Read(r_value));
     BOOST_CHECK_EQUAL(w_value, r_value);
-
-    std::cout << "CASE: TestWriteRead [END]" << std::endl;
 }
 
 BOOST_AUTO_TEST_CASE(TestWriteReadSerializable)
 {
-    std::cout << "CASE: TestWriteReadSerializable [START]" << std::endl;
+    std::cout << "SUITE: BufferTests" << std::endl;
+    std::cout << "CASE: TestWriteRead" << std::endl;
 
     simpleutils::Net::Buffer buffer {};
     Test w_testClass {};
@@ -68,8 +62,6 @@ BOOST_AUTO_TEST_CASE(TestWriteReadSerializable)
     BOOST_CHECK_EQUAL(w_testClass.memberInt, r_testClass.memberInt);
     BOOST_CHECK_EQUAL(w_testClass.memberFloat, r_testClass.memberFloat);
     BOOST_CHECK_EQUAL(w_testClass.memberString, r_testClass.memberString);
-
-    std::cout << "CASE: TestWriteReadSerializable [END]" << std::endl;
 }
 
 BOOST_AUTO_TEST_SUITE_END()

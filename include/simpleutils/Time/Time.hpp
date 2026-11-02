@@ -4,7 +4,7 @@
 #include <chrono>
 #include <cstdint>
 
-namespace simpleutils::Tasks
+namespace simpleutils::Time
 {
     class Duration
     {

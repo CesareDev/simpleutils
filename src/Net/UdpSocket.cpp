@@ -133,4 +133,14 @@ namespace simpleutils::Net
         packet.m_IsValid = true;
         return packet;
     }
+
+    Packet UdpSocket::Receive(const Time::Duration& timeout)
+    {
+        Packet packet {};
+
+        if (!SetReceiveTimeout(timeout))
+            return packet;
+
+        return Receive();
+    }
 } // namespace simpleutils::Net

@@ -1,8 +1,8 @@
-#include <simpleutils/Tasks/Time.hpp>
+#include <simpleutils/Time/Time.hpp>
 
 #include <thread>
 
-namespace simpleutils::Tasks
+namespace simpleutils::Time
 {
     Duration::Duration(int64_t value) :
         m_Value(value)

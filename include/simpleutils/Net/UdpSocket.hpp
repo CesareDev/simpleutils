@@ -18,6 +18,7 @@ namespace simpleutils::Net
 
             bool Send(const Packet& packet) override;
             Packet Receive() override;
+            Packet Receive(const Time::Duration& timeout) override;
 
         private:
             Endpoint m_Destination {};

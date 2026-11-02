@@ -15,8 +15,8 @@ BOOST_AUTO_TEST_CASE(TestPeriodicTask)
             counter++;
     };
     simpleutils::Tasks::Scheduler scheduler {};
-    scheduler.Start(task, simpleutils::Tasks::Milliseconds(250));
-    simpleutils::Tasks::Sleep(simpleutils::Tasks::Seconds(1));
+    scheduler.Start(task, simpleutils::Time::Milliseconds(250));
+    simpleutils::Time::Sleep(simpleutils::Time::Seconds(1));
     scheduler.Stop();
 
     BOOST_CHECK_EQUAL(counter, 4);
@@ -33,8 +33,8 @@ BOOST_AUTO_TEST_CASE(TestPeriodicRepetitionTask)
         counter++;
     };
     simpleutils::Tasks::Scheduler scheduler {};
-    scheduler.StartFor(task, simpleutils::Tasks::Milliseconds(10), repetition);
-    simpleutils::Tasks::Sleep(simpleutils::Tasks::Seconds(1));
+    scheduler.StartFor(task, simpleutils::Time::Milliseconds(10), repetition);
+    simpleutils::Time::Sleep(simpleutils::Time::Seconds(1));
     scheduler.Stop();
 
     BOOST_CHECK_EQUAL(counter, repetition);

@@ -3,6 +3,7 @@
 
 #include <simpleutils/Net/Endpoint.hpp>
 #include <simpleutils/Net/Packet.hpp>
+#include <simpleutils/Time/Time.hpp>
 
 #include <cstddef>
 #include <string>
@@ -22,9 +23,11 @@ namespace simpleutils::Net
             Socket& operator=(Socket&& other) noexcept;
 
             virtual bool Send(const Packet& packet) = 0;
+            virtual Packet Receive(const Time::Duration& timeout) = 0;
             virtual Packet Receive() = 0;
 
             Endpoint GetLocalEndpoint() const;
+            bool SetReceiveTimeout(const Time::Duration& timeout);
 
         protected:
             Endpoint resolve(const std::string& address, int port);

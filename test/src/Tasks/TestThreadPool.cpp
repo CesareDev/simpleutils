@@ -1,7 +1,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <simpleutils/Tasks/ThreadPool.hpp>
-#include <simpleutils/Tasks/Time.hpp>
+#include <simpleutils/Time/Time.hpp>
 #include <simpleutils/Log/Logger.hpp>
 
 BOOST_AUTO_TEST_SUITE(ThreadPoolTests)
@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE(TestSubmit)
     {
         tasks[i] = [&, i]() { 
             counters[i] += i;
-            simpleutils::Tasks::Sleep(simpleutils::Tasks::Milliseconds(1000));
+            simpleutils::Time::Sleep(simpleutils::Time::Milliseconds(1000));
         };
         pool.Submit(tasks[i]);
     }

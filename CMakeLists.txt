@@ -11,7 +11,7 @@ set(LIB_SRC_FILE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Log/Logger.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Tasks/Scheduler.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Tasks/ThreadPool.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Tasks/Time.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Time/Time.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/Socket.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/TcpSocket.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/UdpSocket.cpp

@@ -2,7 +2,7 @@
 #define SIMPLEUTILS_SCHEDULER_HPP
 
 #include <simpleutils/Tasks/Task.hpp>
-#include <simpleutils/Tasks/Time.hpp>
+#include <simpleutils/Time/Time.hpp>
 
 #include <thread>
 #include <functional>
@@ -17,8 +17,8 @@ namespace simpleutils::Tasks
             Scheduler();
             ~Scheduler();
 
-            void Start(const Task& task, const Duration& interval);
-            void StartFor(const Task& task, const Duration& interval, std::uint32_t repetition);
+            void Start(const Task& task, const Time::Duration& interval);
+            void StartFor(const Task& task, const Time::Duration& interval, std::uint32_t repetition);
             void Stop();
 
         private:

@@ -6,7 +6,8 @@ class TestSocket : public simpleutils::Net::Socket
 {
     public:
         bool Send(const simpleutils::Net::Packet& packet) override { return false; }
-        simpleutils::Net::Packet Receive() override { return simpleutils::Net::Packet(); }
+        simpleutils::Net::Packet Receive() override { return {}; }
+        simpleutils::Net::Packet Receive(const simpleutils::Time::Duration& timeout) override { return {}; }
 
         simpleutils::Net::Endpoint Resolve(const std::string& address, int port)
         {

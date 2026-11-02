@@ -53,6 +53,46 @@ namespace simpleutils::Net
         return endpoint;
     }
 
+    bool Socket::SetReceiveTimeout(const Time::Duration& duration)
+    {
+        if (m_FileDescriptor < 0)
+            return false;
+
+        auto nanoseconds = duration.ToChrono();
+
+        if (nanoseconds.count() < 0)
+            return false;
+
+        auto seconds = std::chrono::duration_cast<
+            std::chrono::seconds
+        >(nanoseconds);
+
+        auto microseconds = std::chrono::duration_cast<
+            std::chrono::microseconds
+        >(nanoseconds - seconds);
+
+        timeval timeout {};
+        timeout.tv_sec = seconds.count();
+        timeout.tv_usec = microseconds.count();
+
+        // Linux interprets {0, 0} as no timeout.
+        // Round a positive sub-microsecond duration up.
+        if (nanoseconds.count() > 0 &&
+            timeout.tv_sec == 0 &&
+            timeout.tv_usec == 0)
+        {
+            timeout.tv_usec = 1;
+        }
+
+        return ::setsockopt(
+            m_FileDescriptor,
+            SOL_SOCKET,
+            SO_RCVTIMEO,
+            &timeout,
+            sizeof(timeout)
+        ) == 0;
+    }
+
     Endpoint Socket::resolve(const std::string& address, int port)
     {
         if (port < 0 || port > 65535)
@@ -156,7 +196,7 @@ namespace simpleutils::Net
 
         ::freeaddrinfo(results);
 
-        return endpoint;;
+        return endpoint;
     }
 
     Endpoint Socket::resolveInterface(const std::string& address, int port)

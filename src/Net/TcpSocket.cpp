@@ -259,6 +259,16 @@ namespace simpleutils::Net
         return packet;
     }
 
+    Packet TcpSocket::Receive(const Time::Duration& timeout)
+    {
+        Packet packet {};
+        
+        if (!SetReceiveTimeout(timeout))
+            return packet;
+        
+        return Receive();
+    }
+
     bool TcpSocket::IsOpen() const
     {
         return m_FileDescriptor >= 0;

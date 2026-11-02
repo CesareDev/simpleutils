@@ -13,6 +13,9 @@ namespace simpleutils::Net
             TcpSocket() = default;
             ~TcpSocket() override = default;
 
+            TcpSocket(TcpSocket&& other) noexcept = default;
+            TcpSocket& operator=(TcpSocket&& other) noexcept = default;
+
             bool Bind(const std::string& address, int port);
             bool Listen(int backlog = 10);
             TcpSocket Accept();
@@ -20,6 +23,7 @@ namespace simpleutils::Net
 
             bool Send(const Packet& packet) override;
             Packet Receive() override;
+            Packet Receive(const Time::Duration& timeout) override;
 
             bool IsOpen() const;
 

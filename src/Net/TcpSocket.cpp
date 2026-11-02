@@ -22,7 +22,7 @@ namespace simpleutils::Net
         if (!endpoint.isValid)
             return false;
 
-        m_FileDescriptor = socket(
+        m_FileDescriptor = ::socket(
             endpoint.addr.ss_family,
             SOCK_STREAM,
             0
@@ -34,21 +34,21 @@ namespace simpleutils::Net
         // Allow quicker reuse of a local listening address.
         int reuseAddress = 1;
 
-        if (setsockopt(
+        if (::setsockopt(
                 m_FileDescriptor,
                 SOL_SOCKET,
                 SO_REUSEADDR,
                 &reuseAddress,
                 sizeof(reuseAddress)) < 0)
         {
-            close(m_FileDescriptor);
+            ::close(m_FileDescriptor);
             m_FileDescriptor = -1;
             return false;
         }
 
-        if (bind(m_FileDescriptor, reinterpret_cast<const sockaddr*>(&endpoint.addr), endpoint.addrLength) < 0)
+        if (::bind(m_FileDescriptor, reinterpret_cast<const sockaddr*>(&endpoint.addr), endpoint.addrLength) < 0)
         {
-            close(m_FileDescriptor);
+            ::close(m_FileDescriptor);
             m_FileDescriptor = -1;
             return false;
         }
@@ -61,7 +61,7 @@ namespace simpleutils::Net
         if (m_FileDescriptor < 0 || backlog < 0)
             return false;
 
-        return listen(m_FileDescriptor, backlog) == 0;
+        return ::listen(m_FileDescriptor, backlog) == 0;
     }
 
     TcpSocket TcpSocket::Accept()
@@ -73,7 +73,7 @@ namespace simpleutils::Net
 
         do
         {
-            clientDescriptor = accept(
+            clientDescriptor = ::accept(
                 m_FileDescriptor,
                 nullptr,
                 nullptr
@@ -100,14 +100,14 @@ namespace simpleutils::Net
         if (!endpoint.isValid)
             return false;
 
-        m_FileDescriptor = socket(endpoint.addr.ss_family, SOCK_STREAM, 0);
+        m_FileDescriptor = ::socket(endpoint.addr.ss_family, SOCK_STREAM, 0);
         if (m_FileDescriptor < 0)
             return false;
         
-        int connRes = connect(m_FileDescriptor, reinterpret_cast<sockaddr*>(&endpoint.addr), endpoint.addrLength);
+        int connRes = ::connect(m_FileDescriptor, reinterpret_cast<sockaddr*>(&endpoint.addr), endpoint.addrLength);
         if (connRes < 0)
         {
-            close(m_FileDescriptor);
+            ::close(m_FileDescriptor);
             m_FileDescriptor = -1;
             return false;
         }
@@ -140,7 +140,7 @@ namespace simpleutils::Net
 
         while (totalSent < bufferSize)
         {
-            auto sent = send(
+            auto sent = ::send(
                 m_FileDescriptor,
                 data + totalSent,
                 bufferSize - totalSent,
@@ -173,12 +173,12 @@ namespace simpleutils::Net
             return packet;
 
         // Receive the 4-byte size header.
-        std::uint32_t networkSize = 0;
-        std::size_t totalReceived = 0;
+        std::uint32_t networkSize {};
+        std::size_t totalReceived {};
 
         while (totalReceived < sizeof(networkSize))
         {
-            ssize_t received = recv(
+            ssize_t received = ::recv(
                 m_FileDescriptor,
                 reinterpret_cast<std::byte*>(&networkSize) + totalReceived,
                 sizeof(networkSize) - totalReceived,
@@ -201,12 +201,12 @@ namespace simpleutils::Net
         }
 
         // Deserialize the size through our Buffer class.
-        Buffer header;
+        Buffer header {};
 
         if (!header.Write(&networkSize, sizeof(networkSize)))
             return packet;
 
-        std::uint32_t payloadSize = 0;
+        std::uint32_t payloadSize {};
 
         if (!header.Read(payloadSize))
             return packet;
@@ -218,8 +218,8 @@ namespace simpleutils::Net
             return packet;
 
         // Receive the payload.
-        std::byte data[4096];
-        std::size_t totalPayload = 0;
+        std::byte data[4096] {};
+        std::size_t totalPayload {};
 
         while (totalPayload < payloadSize)
         {

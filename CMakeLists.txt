@@ -14,8 +14,10 @@ set(LIB_SRC_FILE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Tasks/Time.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/Socket.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/TcpSocket.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/UdpSocket.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/Buffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/Packet.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/Endpoint.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED  ${LIB_SRC_FILE})

@@ -5,22 +5,18 @@
 class Test : public simpleutils::Net::Serializable
 {
     public:
+        Test() = default;
+        ~Test() override = default;
+
+    protected:
         bool Serialize(simpleutils::Net::Buffer& buffer) const override
         {
-            auto resInt = buffer.Write(memberInt);
-            auto resFloat = buffer.Write(memberFloat);
-            auto resString = buffer.Write(memberString);
-
-            return resInt && resFloat && resString;
+            return buffer.Write(memberInt) && buffer.Write(memberFloat) && buffer.Write(memberString);
         }
 
         bool Deserialize(simpleutils::Net::Buffer& buffer) override
         {
-            auto resInt = buffer.Read(memberInt);
-            auto resFloat = buffer.Read(memberFloat);
-            auto resString = buffer.Read(memberString);
-
-            return resInt && resFloat && resString;
+            return buffer.Read(memberInt) && buffer.Read(memberFloat) && buffer.Read(memberString);
         }
     
     public:

@@ -3,6 +3,9 @@
 
 #include <sys/socket.h>
 
+#include <cstdint>
+#include <string>
+
 namespace simpleutils::Net
 {
     struct Endpoint
@@ -10,6 +13,9 @@ namespace simpleutils::Net
         sockaddr_storage addr {};
         socklen_t addrLength {};
         bool isValid {};
+
+        std::uint16_t GetPort() const;
+        std::string GetAddress() const;
     };
     
 } // namespace simpleutils::Net

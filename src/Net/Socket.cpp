@@ -13,7 +13,7 @@ namespace simpleutils::Net
     Socket::~Socket()
     {
         if (m_FileDescriptor >= 0)
-            close(m_FileDescriptor);            
+            ::close(m_FileDescriptor);
     }
 
     Socket::Socket(Socket&& other) noexcept
@@ -26,7 +26,7 @@ namespace simpleutils::Net
         if (this != &other)
         {
             if (m_FileDescriptor >= 0)
-                close(m_FileDescriptor);
+                ::close(m_FileDescriptor);
 
             m_FileDescriptor = std::exchange(other.m_FileDescriptor, -1);
         }
@@ -41,7 +41,9 @@ namespace simpleutils::Net
         if (m_FileDescriptor < 0)
             return endpoint;
 
-        if (getsockname(m_FileDescriptor, reinterpret_cast<sockaddr*>(&endpoint.addr), &endpoint.addrLength) < 0)
+        endpoint.addrLength = sizeof(endpoint.addr);
+
+        if (::getsockname(m_FileDescriptor, reinterpret_cast<sockaddr*>(&endpoint.addr), &endpoint.addrLength) < 0)
         {
             return {};
         }
@@ -81,10 +83,10 @@ namespace simpleutils::Net
         sockaddr_in ipv4 {};
 
         // Try IPv4
-        if (inet_pton(AF_INET, address.c_str(), &ipv4.sin_addr) == 1)
+        if (::inet_pton(AF_INET, address.c_str(), &ipv4.sin_addr) == 1)
         {
             ipv4.sin_family = AF_INET;
-            ipv4.sin_port = htons(port);
+            ipv4.sin_port = ::htons(port);
 
             std::memcpy(&endpoint.addr, &ipv4, sizeof(ipv4));
             endpoint.addrLength = sizeof(ipv4);
@@ -95,10 +97,10 @@ namespace simpleutils::Net
         sockaddr_in6 ipv6 {};
 
         // Try IPv6
-        if (inet_pton(AF_INET6, address.c_str(), &ipv6.sin6_addr) == 1)
+        if (::inet_pton(AF_INET6, address.c_str(), &ipv6.sin6_addr) == 1)
         {
             ipv6.sin6_family = AF_INET6;
-            ipv6.sin6_port = htons(port);
+            ipv6.sin6_port = ::htons(port);
 
             std::memcpy(&endpoint.addr, &ipv6, sizeof(ipv6));
             endpoint.addrLength = sizeof(ipv6);
@@ -119,7 +121,7 @@ namespace simpleutils::Net
 
         addrinfo* results = nullptr;
 
-        int result = getaddrinfo(
+        int result = ::getaddrinfo(
             address.c_str(),
             std::to_string(port).c_str(),
             &hints,
@@ -152,7 +154,7 @@ namespace simpleutils::Net
             break;
         }
 
-        freeaddrinfo(results);
+        ::freeaddrinfo(results);
 
         return endpoint;;
     }
@@ -163,7 +165,7 @@ namespace simpleutils::Net
 
         ifaddrs* interfaces = nullptr;
 
-        if (getifaddrs(&interfaces) != 0)
+        if (::getifaddrs(&interfaces) != 0)
             return endpoint;
 
         for (ifaddrs* current = interfaces; current != nullptr; current = current->ifa_next)
@@ -178,7 +180,7 @@ namespace simpleutils::Net
             {
                 sockaddr_in ipv4 = *reinterpret_cast<sockaddr_in*>(current->ifa_addr);
 
-                ipv4.sin_port = htons(port);
+                ipv4.sin_port = ::htons(port);
 
                 std::memcpy(&endpoint.addr, &ipv4, sizeof(ipv4));
                 endpoint.addrLength = sizeof(ipv4);
@@ -189,7 +191,7 @@ namespace simpleutils::Net
             {
                 sockaddr_in6 ipv6 = *reinterpret_cast<sockaddr_in6*>(current->ifa_addr);
 
-                ipv6.sin6_port = htons(port);
+                ipv6.sin6_port = ::htons(port);
 
                 std::memcpy(&endpoint.addr, &ipv6, sizeof(ipv6));
                 endpoint.addrLength = sizeof(ipv6);
@@ -198,7 +200,7 @@ namespace simpleutils::Net
             }
         }
 
-        freeifaddrs(interfaces);
+        ::freeifaddrs(interfaces);
         return endpoint;
     }
 } // namespace simpleutils::Net

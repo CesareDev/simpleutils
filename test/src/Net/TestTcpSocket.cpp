@@ -13,12 +13,14 @@ BOOST_AUTO_TEST_CASE(TestPacket)
     std::cout << "CASE: TestPacket" << std::endl;
     
     simpleutils::Net::TcpSocket server {};
-    BOOST_CHECK(server.Bind("127.0.0.1", 12345));
+    BOOST_CHECK(server.Bind("127.0.0.1", 0));
     BOOST_CHECK(server.Listen());
-    std::thread clientThread([](){
+    simpleutils::Net::Endpoint serverLocalEndpoint = server.GetLocalEndpoint();
+    BOOST_CHECK(serverLocalEndpoint.isValid);
+    std::thread clientThread([serverLocalEndpoint](){
         simpleutils::Net::TcpSocket client {};
         simpleutils::Tasks::Sleep(simpleutils::Tasks::Seconds(1));
-        BOOST_CHECK(client.Connect("127.0.0.1", 12345));
+        BOOST_CHECK(client.Connect(serverLocalEndpoint.GetAddress(), serverLocalEndpoint.GetPort()));
         simpleutils::Net::Packet packet;
         BOOST_CHECK(packet.GetBuffer().Write("Hello World!"));
         BOOST_CHECK(client.Send(packet));

@@ -9,8 +9,12 @@ namespace simpleutils::Net
     {
         public:
             virtual ~Serializable() = default;
+
+        protected:
             virtual bool Serialize(Buffer& buffer) const = 0;
             virtual bool Deserialize(Buffer& buffer) = 0;
+
+        friend class Buffer;
     };
 } // namespace simpleutils::Net
 

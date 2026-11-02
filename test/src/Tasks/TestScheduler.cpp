@@ -10,7 +10,7 @@ BOOST_AUTO_TEST_CASE(TestPeriodicTask)
     std::cout << "CASE: TestPeriodicTask" << std::endl;
 
     int counter {};
-    simpleutils::Tasks::Task task = [&]() {
+    simpleutils::Tasks::SchedulerTask task = [&]() {
         if (counter < 4)
             counter++;
     };
@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE(TestPeriodicRepetitionTask)
 
     int repetition = 10;
     int counter {};
-    simpleutils::Tasks::Task task = [&]() {
+    simpleutils::Tasks::SchedulerTask task = [&]() {
         counter++;
     };
     simpleutils::Tasks::Scheduler scheduler {};

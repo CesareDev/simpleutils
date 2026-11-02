@@ -28,7 +28,7 @@ namespace simpleutils::Tasks
         return true;
     }
 
-    bool ThreadPool::Submit(const Task& task)
+    bool ThreadPool::Submit(const ThreadPoolTask& task)
     {
         {
             std::lock_guard<std::mutex> lock(m_QueueMutex);
@@ -63,7 +63,7 @@ namespace simpleutils::Tasks
     {
         while (true)
         {
-            Task task;
+            ThreadPoolTask task;
 
             {
                 std::unique_lock<std::mutex> lock(m_QueueMutex);

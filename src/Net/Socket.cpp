@@ -53,6 +53,11 @@ namespace simpleutils::Net
         return endpoint;
     }
 
+    int Socket::GetFileDescriptor() const
+    {
+        return m_FileDescriptor;
+    }
+
     bool Socket::SetReceiveTimeout(const Time::Duration& duration)
     {
         if (m_FileDescriptor < 0)

@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_CASE(TestSubmit)
     std::cout << "CASE: TestSubmit" << std::endl;
 
     int counters[6] {};
-    simpleutils::Tasks::Task tasks[6] {};
+    simpleutils::Tasks::ThreadPoolTask tasks[6] {};
     simpleutils::Tasks::ThreadPool pool;
 
     auto res = pool.Create(4);

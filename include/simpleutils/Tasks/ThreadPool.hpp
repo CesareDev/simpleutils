@@ -19,14 +19,14 @@ namespace simpleutils::Tasks
             ~ThreadPool();
 
             bool Create(std::size_t poolSize);
-            bool Submit(const Task& task);
+            bool Submit(const ThreadPoolTask& task);
             void Stop();
 
         private:
             void workerLoop();
 
         private:
-            std::queue<Task> m_Tasks {};
+            std::queue<ThreadPoolTask> m_Tasks {};
             std::vector<std::thread> m_Workers {};
             std::mutex m_QueueMutex {};
             std::condition_variable m_Condition {};

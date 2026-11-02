@@ -11,7 +11,7 @@ namespace simpleutils::Tasks
         Stop();
     }
     
-    void Scheduler::Start(const Task& task, const Time::Duration& interval)
+    void Scheduler::Start(const SchedulerTask& task, const Time::Duration& interval)
     {
         if (m_IsRunnig) return;
 
@@ -27,7 +27,7 @@ namespace simpleutils::Tasks
         });
     }
 
-    void Scheduler::StartFor(const Task& task, const Time::Duration& interval, std::uint32_t repetition)
+    void Scheduler::StartFor(const SchedulerTask& task, const Time::Duration& interval, std::uint32_t repetition)
     {
         if (m_IsRunnig) return;
 

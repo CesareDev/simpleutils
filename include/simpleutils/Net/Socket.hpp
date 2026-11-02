@@ -27,6 +27,7 @@ namespace simpleutils::Net
             virtual Packet Receive() = 0;
 
             Endpoint GetLocalEndpoint() const;
+            int GetFileDescriptor() const;
             bool SetReceiveTimeout(const Time::Duration& timeout);
 
         protected:

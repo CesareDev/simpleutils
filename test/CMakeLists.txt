@@ -9,6 +9,7 @@ set(TEST_SRC_FILE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/TestUdpSocket.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/TestBuffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/TestEndpoint.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/TestSocketPolling.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
 )
 

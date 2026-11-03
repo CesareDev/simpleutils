@@ -1,26 +1,29 @@
 #ifndef SIMPLEUTILS_THREADPOOL_HPP
 #define SIMPLEUTILS_THREADPOOL_HPP
 
-#include <functional>
+#include <simpleutils/Threading/Thread.hpp>
+#include <simpleutils/Threading/Runnable.hpp>
+
 #include <queue>
-#include <vector>
-#include <thread>
-#include <mutex>
-#include <atomic>
 #include <condition_variable>
 
 namespace simpleutils::Threading
 {
-    using Callback = std::function<void()>;
-
     class ThreadPool
     {
         public:
-            ThreadPool();
+            using Callback = std::function<void()>;
+
+        public:
+            ThreadPool() = default;
             ~ThreadPool();
+
+            ThreadPool(const ThreadPool&) = delete;
+            ThreadPool& operator=(const ThreadPool&) = delete;
 
             bool Create(std::size_t poolSize);
             bool Submit(const Callback& task);
+            bool Submit(Runnable& runnable);
             void Stop();
 
         private:
@@ -28,7 +31,7 @@ namespace simpleutils::Threading
 
         private:
             std::queue<Callback> m_Tasks {};
-            std::vector<std::thread> m_Workers {};
+            std::vector<std::unique_ptr<Thread>> m_Workers {};
             std::mutex m_QueueMutex {};
             std::condition_variable m_Condition {};
             bool m_Stop {};

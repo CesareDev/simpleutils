@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(TestPoll)
     BOOST_CHECK(packet2.GetBuffer().Write("Hello2"));
     BOOST_CHECK(sender.Send(packet2));
 
-    simpleutils::Net::Callback callback = [&firstReceive, &secondReceive](simpleutils::Net::Socket& socket) {
+    simpleutils::Net::SocketPolling::Callback callback = [&firstReceive, &secondReceive](simpleutils::Net::Socket& socket) {
         simpleutils::Net::Packet packet = socket.Receive();
         BOOST_CHECK(packet.IsValid());
         std::string msg {};

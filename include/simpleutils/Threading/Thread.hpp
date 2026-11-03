@@ -2,15 +2,19 @@
 #ifndef SIMPLEUTILS_THREAD_HPP
 #define SIMPLEUTILS_THREAD_HPP
 
+#include <simpleutils/Threading/Runnable.hpp>
+
 #include <thread>
 #include <functional>
+#include <atomic>
 
 namespace simpleutils::Threading
 {
-    using Callback = std::function<void()>;
-
     class Thread
     {
+        public:
+            using Callback = std::function<void()>;
+
         public:
             Thread() = default;
             ~Thread();
@@ -19,6 +23,7 @@ namespace simpleutils::Threading
             Thread& operator=(const Thread&) = delete;
 
             bool Start(const Callback& callback);
+            bool Start(Runnable& runnable);
             void Join();
 
             bool IsRunning() const;
@@ -26,6 +31,7 @@ namespace simpleutils::Threading
 
         private:
             std::thread m_Thread {};
+            std::atomic<bool> m_IsRunning {};
     };
 }
 

@@ -18,6 +18,7 @@ set(LIB_SRC_FILE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/Packet.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/Endpoint.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/SocketPolling.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Threading/Thread.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Threading/ThreadPool.cpp
 )
 

@@ -11,10 +11,11 @@
 
 namespace simpleutils::Net
 {
-    using Callback = std::function<void(Net::Socket&)>;
-
     class SocketPolling
     {
+        public:
+            using Callback = std::function<void(Net::Socket&)>;
+
         public:
             SocketPolling();
             ~SocketPolling();

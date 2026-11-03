@@ -40,8 +40,7 @@ namespace simpleutils::Net
         if (m_Sockets.find(descriptor) != m_Sockets.end())
             return false;
 
-        if (m_NextRegistrationId ==
-            std::numeric_limits<std::uint64_t>::max())
+        if (m_NextRegistrationId == std::numeric_limits<std::uint64_t>::max())
             return false;
 
         std::uint64_t registrationId = ++m_NextRegistrationId;
@@ -88,9 +87,7 @@ namespace simpleutils::Net
             return false;
         }
 
-        for (auto registration = m_Registrations.begin();
-             registration != m_Registrations.end();
-             ++registration)
+        for (auto registration = m_Registrations.begin(); registration != m_Registrations.end(); ++registration)
         {
             if (registration->second == descriptor)
             {
@@ -105,7 +102,7 @@ namespace simpleutils::Net
 
     int SocketPolling::Process(const Tasks::PollingTask& callback)
     {
-        return ProcessInternal(-1, callback);
+        return processInternal(-1, callback);
     }
 
     int SocketPolling::Process(const Time::Duration& timeout, const Tasks::PollingTask& callback)
@@ -126,10 +123,10 @@ namespace simpleutils::Net
         if (timeoutMs > INT_MAX)
             return -1;
 
-        return ProcessInternal(static_cast<int>(timeoutMs), callback);
+        return processInternal(static_cast<int>(timeoutMs), callback);
     }
 
-    int SocketPolling::ProcessInternal(int timeoutMs, const Tasks::PollingTask& callback)
+    int SocketPolling::processInternal(int timeoutMs, const Tasks::PollingTask& callback)
     {
         if (!IsValid() || !callback)
             return -1;

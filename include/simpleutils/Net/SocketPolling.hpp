@@ -29,7 +29,7 @@ namespace simpleutils::Net
             int Process(const Time::Duration& timeout, const Tasks::PollingTask& callback);
 
         private:
-            int ProcessInternal(int timeoutMs, const Tasks::PollingTask& callback);
+            int processInternal(int timeoutMs, const Tasks::PollingTask& callback);
 
         private:
             int m_EpollDescriptor { -1 };

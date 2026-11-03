@@ -1,4 +1,4 @@
-#include <simpleutils/Log/Logger.hpp>
+#include <simpleutils/Common/Logger.hpp>
 
 #include <iostream>
 #include <mutex>

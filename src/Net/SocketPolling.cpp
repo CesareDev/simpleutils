@@ -100,12 +100,12 @@ namespace simpleutils::Net
         return true;
     }
 
-    int SocketPolling::Process(const Tasks::PollingTask& callback)
+    int SocketPolling::Process(const Callback& callback)
     {
         return processInternal(-1, callback);
     }
 
-    int SocketPolling::Process(const Time::Duration& timeout, const Tasks::PollingTask& callback)
+    int SocketPolling::Process(const Time::Duration& timeout, const Callback& callback)
     {
         auto nanoseconds = timeout.ToChrono();
 
@@ -126,7 +126,7 @@ namespace simpleutils::Net
         return processInternal(static_cast<int>(timeoutMs), callback);
     }
 
-    int SocketPolling::processInternal(int timeoutMs, const Tasks::PollingTask& callback)
+    int SocketPolling::processInternal(int timeoutMs, const Callback& callback)
     {
         if (!IsValid() || !callback)
             return -1;

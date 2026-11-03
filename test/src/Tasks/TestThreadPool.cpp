@@ -1,8 +1,7 @@
 #include <boost/test/unit_test.hpp>
 
-#include <simpleutils/Tasks/ThreadPool.hpp>
+#include <simpleutils/Threading/ThreadPool.hpp>
 #include <simpleutils/Time/Time.hpp>
-#include <simpleutils/Log/Logger.hpp>
 
 BOOST_AUTO_TEST_SUITE(ThreadPoolTests)
 
@@ -11,7 +10,7 @@ BOOST_AUTO_TEST_CASE(TestInvalidSize)
     std::cout << "SUITE: ThreadPoolTests" << std::endl;
     std::cout << "CASE: TestInvalidSize" << std::endl;
 
-    simpleutils::Tasks::ThreadPool pool;
+    simpleutils::Threading::ThreadPool pool;
     auto res = pool.Create(0);
     BOOST_CHECK(!res);
 }
@@ -22,8 +21,8 @@ BOOST_AUTO_TEST_CASE(TestSubmit)
     std::cout << "CASE: TestSubmit" << std::endl;
 
     int counters[6] {};
-    simpleutils::Tasks::ThreadPoolTask tasks[6] {};
-    simpleutils::Tasks::ThreadPool pool;
+    simpleutils::Threading::Callback tasks[6] {};
+    simpleutils::Threading::ThreadPool pool;
 
     auto res = pool.Create(4);
     BOOST_CHECK(res);

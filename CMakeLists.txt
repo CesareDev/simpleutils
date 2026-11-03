@@ -4,13 +4,12 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 project(simpleutils)
 
 set(LIB_SRC_FILE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Common/Logger.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Config/Loader.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Config/IniLoader.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Config/JsonLoader.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Config/XmlLoader.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Log/Logger.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Tasks/Scheduler.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Tasks/ThreadPool.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Time/Time.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/Socket.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/TcpSocket.cpp
@@ -19,6 +18,7 @@ set(LIB_SRC_FILE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/Packet.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/Endpoint.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/SocketPolling.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Threading/ThreadPool.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED  ${LIB_SRC_FILE})

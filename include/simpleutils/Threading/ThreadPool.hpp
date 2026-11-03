@@ -1,8 +1,7 @@
 #ifndef SIMPLEUTILS_THREADPOOL_HPP
 #define SIMPLEUTILS_THREADPOOL_HPP
 
-#include <simpleutils/Tasks/Task.hpp>
-
+#include <functional>
 #include <queue>
 #include <vector>
 #include <thread>
@@ -10,8 +9,10 @@
 #include <atomic>
 #include <condition_variable>
 
-namespace simpleutils::Tasks
+namespace simpleutils::Threading
 {
+    using Callback = std::function<void()>;
+
     class ThreadPool
     {
         public:
@@ -19,14 +20,14 @@ namespace simpleutils::Tasks
             ~ThreadPool();
 
             bool Create(std::size_t poolSize);
-            bool Submit(const ThreadPoolTask& task);
+            bool Submit(const Callback& task);
             void Stop();
 
         private:
             void workerLoop();
 
         private:
-            std::queue<ThreadPoolTask> m_Tasks {};
+            std::queue<Callback> m_Tasks {};
             std::vector<std::thread> m_Workers {};
             std::mutex m_QueueMutex {};
             std::condition_variable m_Condition {};

@@ -1,8 +1,8 @@
-#include <simpleutils/Tasks/ThreadPool.hpp>
+#include <simpleutils/Threading/ThreadPool.hpp>
 
 #include <stdexcept>
 
-namespace simpleutils::Tasks
+namespace simpleutils::Threading
 {
     ThreadPool::ThreadPool()
     {
@@ -28,7 +28,7 @@ namespace simpleutils::Tasks
         return true;
     }
 
-    bool ThreadPool::Submit(const ThreadPoolTask& task)
+    bool ThreadPool::Submit(const Callback& task)
     {
         {
             std::lock_guard<std::mutex> lock(m_QueueMutex);
@@ -63,7 +63,7 @@ namespace simpleutils::Tasks
     {
         while (true)
         {
-            ThreadPoolTask task;
+            Callback task;
 
             {
                 std::unique_lock<std::mutex> lock(m_QueueMutex);

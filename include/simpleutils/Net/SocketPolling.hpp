@@ -3,14 +3,16 @@
 #define SIMPLEUTILS_SOCKETPOLLING_HPP
 
 #include <simpleutils/Net/Socket.hpp>
-#include <simpleutils/Tasks/Task.hpp>
 #include <simpleutils/Time/Time.hpp>
 
+#include <functional>
 #include <unordered_map>
 #include <cstdint>
 
 namespace simpleutils::Net
 {
+    using Callback = std::function<void(Net::Socket&)>;
+
     class SocketPolling
     {
         public:
@@ -25,11 +27,11 @@ namespace simpleutils::Net
             bool Add(Socket& socket);
             bool Remove(Socket& socket);
 
-            int Process(const Tasks::PollingTask& callback);
-            int Process(const Time::Duration& timeout, const Tasks::PollingTask& callback);
+            int Process(const Callback& callback);
+            int Process(const Time::Duration& timeout, const Callback& callback);
 
         private:
-            int processInternal(int timeoutMs, const Tasks::PollingTask& callback);
+            int processInternal(int timeoutMs, const Callback& callback);
 
         private:
             int m_EpollDescriptor { -1 };

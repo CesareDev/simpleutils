@@ -11,6 +11,7 @@ set(LIB_SRC_FILE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Config/XmlLoader.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Tasks/Scheduler.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Time/Time.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Time/StopWatch.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/Socket.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/TcpSocket.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/UdpSocket.cpp
@@ -20,6 +21,7 @@ set(LIB_SRC_FILE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/SocketPolling.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Threading/Thread.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Threading/ThreadPool.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/IO/File.cpp
 )
 
 add_library(${PROJECT_NAME} SHARED  ${LIB_SRC_FILE})

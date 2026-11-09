@@ -11,6 +11,8 @@ set(TEST_SRC_FILE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Net/TestSocketPolling.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Threading/TestThreadPool.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Threading/TestThread.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Time/TestStopWatch.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/IO/TestFile.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
 )
 

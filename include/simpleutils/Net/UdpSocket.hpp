@@ -17,8 +17,9 @@ namespace simpleutils::Net
             bool SetDestination(const std::string& address, int port);
 
             bool Send(const Packet& packet) override;
-            Packet Receive() override;
-            Packet Receive(const Time::Duration& timeout) override;
+            bool SendRaw(const void* data, std::size_t size) override;
+            Packet Receive(const Time::Duration& timeout = Time::Milliseconds(0)) override;
+            bool ReceiveRaw(void* buffer, std::size_t capacity, std::size_t& bytesReceived, const Time::Duration& timeout = Time::Milliseconds(0)) override;
 
         private:
             Endpoint m_Destination {};

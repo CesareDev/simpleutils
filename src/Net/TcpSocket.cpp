@@ -165,9 +165,53 @@ namespace simpleutils::Net
         return true;
     }
 
-    Packet TcpSocket::Receive()
+    bool TcpSocket::SendRaw(const void* data, std::size_t size)
+    {
+        if (m_FileDescriptor < 0)
+            return false;
+
+        if (data == nullptr && size > 0)
+            return false;
+
+        std::size_t totalSent {};
+        const std::byte* bytes = static_cast<const std::byte*>(data);
+
+        while (totalSent < size)
+        {
+            auto sent = ::send(
+                m_FileDescriptor,
+                bytes + totalSent,
+                size - totalSent,
+                MSG_NOSIGNAL
+            );
+
+            if (sent < 0)
+            {
+                if (errno == EINTR)
+                    continue;
+
+                return false;
+            }
+            else if (sent == 0)
+            {
+                return false;
+            }
+
+            totalSent += static_cast<std::size_t>(sent);
+        }
+
+        return true;
+    }
+
+    Packet TcpSocket::Receive(const Time::Duration& timeout)
     {
         Packet packet {};
+
+        if (timeout.ToChrono().count() > 0)
+        {
+            if (!SetReceiveTimeout(timeout))
+                return packet;
+        }
 
         if (m_FileDescriptor < 0)
             return packet;
@@ -259,14 +303,38 @@ namespace simpleutils::Net
         return packet;
     }
 
-    Packet TcpSocket::Receive(const Time::Duration& timeout)
+    bool TcpSocket::ReceiveRaw(void* buffer, std::size_t capacity, std::size_t& bytesReceived, const Time::Duration& timeout)
     {
-        Packet packet {};
+        bytesReceived = 0;
         
-        if (!SetReceiveTimeout(timeout))
-            return packet;
+        if (m_FileDescriptor < 0 || buffer == nullptr || capacity == 0)
+            return false;
         
-        return Receive();
+        if (timeout.ToChrono().count() > 0)
+        {
+            if (!SetReceiveTimeout(timeout))
+                return false;
+        }
+        
+        ssize_t received {};
+
+        do
+        {
+            received = ::recv(
+                m_FileDescriptor,
+                buffer,
+                capacity,
+                0
+            );
+        }
+        while (received < 0 && errno == EINTR);
+
+        if (received <= 0)
+            return false;
+
+        bytesReceived = static_cast<std::size_t>(received);
+
+        return true;
     }
 
     bool TcpSocket::IsOpen() const

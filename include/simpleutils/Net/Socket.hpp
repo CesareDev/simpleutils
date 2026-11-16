@@ -23,8 +23,9 @@ namespace simpleutils::Net
             Socket& operator=(Socket&& other) noexcept;
 
             virtual bool Send(const Packet& packet) = 0;
-            virtual Packet Receive(const Time::Duration& timeout) = 0;
-            virtual Packet Receive() = 0;
+            virtual bool SendRaw(const void* data, std::size_t size) = 0;
+            virtual Packet Receive(const Time::Duration& timeout = Time::Milliseconds(0)) = 0;
+            virtual bool ReceiveRaw(void* buffer, std::size_t capacity, std::size_t& bytesReceived, const Time::Duration& timeout = Time::Milliseconds(0)) = 0;
 
             Endpoint GetLocalEndpoint() const;
             int GetFileDescriptor() const;

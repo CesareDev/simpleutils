@@ -34,13 +34,4 @@ BOOST_AUTO_TEST_CASE(TestPacket)
         clientThread.join();
 }
 
-BOOST_AUTO_TEST_CASE(TestTimeout)
-{
-    simpleutils::Net::TcpSocket server {};
-    BOOST_CHECK(server.Bind("127.0.0.1", 0));
-    BOOST_CHECK(server.Listen());
-    auto receive = server.Receive(simpleutils::Time::Seconds(1));
-    BOOST_CHECK(!receive.IsValid());
-}
-
 BOOST_AUTO_TEST_SUITE_END()

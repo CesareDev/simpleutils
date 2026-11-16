@@ -94,9 +94,54 @@ namespace simpleutils::Net
         return sent >= 0 && static_cast<std::size_t>(sent) == payload.Remaining();
     }
 
-    Packet UdpSocket::Receive()
+    bool UdpSocket::SendRaw(const void* data, std::size_t size)
+    {
+        if (!m_Destination.isValid)
+        return false;
+
+        if (data == nullptr && size > 0)
+            return false;
+
+        // Create the socket if it doesn't exist.
+        if (m_FileDescriptor < 0)
+        {
+            m_FileDescriptor = ::socket(
+                m_Destination.addr.ss_family,
+                SOCK_DGRAM,
+                0
+            );
+
+            if (m_FileDescriptor < 0)
+                return false;
+        }
+
+        ssize_t sent {};
+
+        do
+        {
+            sent = ::sendto(
+                m_FileDescriptor,
+                data,
+                size,
+                0,
+                reinterpret_cast<const sockaddr*>(&m_Destination.addr),
+                m_Destination.addrLength
+            );
+        }
+        while (sent < 0 && errno == EINTR);
+
+        return sent >= 0 && static_cast<std::size_t>(sent) == size;
+    }
+
+    Packet UdpSocket::Receive(const Time::Duration& timeout)
     {
         Packet packet {};
+
+        if (timeout.ToChrono().count() > 0)
+        {
+            if (!SetReceiveTimeout(timeout))
+                return packet;
+        }
 
         if (m_FileDescriptor < 0)
             return packet;
@@ -134,13 +179,40 @@ namespace simpleutils::Net
         return packet;
     }
 
-    Packet UdpSocket::Receive(const Time::Duration& timeout)
+    bool UdpSocket::ReceiveRaw(void* buffer, std::size_t capacity, std::size_t& bytesReceived, const Time::Duration& timeout)
     {
-        Packet packet {};
+        bytesReceived = 0;
+
+        if (m_FileDescriptor < 0 || buffer == nullptr || capacity == 0)
+            return false;
 
         if (!SetReceiveTimeout(timeout))
-            return packet;
+            return false;
 
-        return Receive();
+        ssize_t received {};
+
+        do
+        {
+            received = ::recvfrom(
+                m_FileDescriptor,
+                buffer,
+                capacity,
+                MSG_TRUNC,
+                nullptr,
+                nullptr
+            );
+        }
+        while (received < 0 && errno == EINTR);
+
+        if (received < 0)
+            return false;
+
+        // Reject datagrams larger than the provided buffer.
+        if (static_cast<std::size_t>(received) > capacity)
+            return false;
+
+        bytesReceived = static_cast<std::size_t>(received);
+
+        return true;
     }
 } // namespace simpleutils::Net

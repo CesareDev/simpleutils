@@ -3,56 +3,68 @@
 
 namespace simpleutils::Threading
 {
+    using Common::ErrorCode;
+    using Common::ReturnCode;
+
     ThreadPool::~ThreadPool()
     {
         Stop();
     }
 
-    bool ThreadPool::Create(std::size_t poolSize)
+    ReturnCode ThreadPool::Create(std::size_t poolSize)
     {
-        if (poolSize == 0 || !m_Workers.empty() || m_Stop)
-            return false;
+        if (poolSize == 0)
+            return ErrorCode::InvalidArgument;
+
+        if (!m_Workers.empty())
+            return ErrorCode::AlreadyInitialized;
+
+        if (m_Stop)
+            return ErrorCode::ThreadPoolStopped;
 
         for (std::size_t i {}; i < poolSize; ++i)
         {
             auto worker = std::make_unique<Thread>();
 
-            bool workerStart = worker->Start([this]() { 
+            auto workerStart = worker->Start([this]() { 
                 workerLoop();
             });
 
             if (!workerStart)
             {
                 Stop();
-                return false;
+                return workerStart;
             }
 
             m_Workers.push_back(std::move(worker));
         }
 
-        return true;
+        return ErrorCode::None;
     }
 
-    bool ThreadPool::Submit(const Callback& task)
+    ReturnCode ThreadPool::Submit(const Callback& task)
     {
         if (!task)
-            return false;
+            return ErrorCode::InvalidArgument;
 
         {
             std::lock_guard<std::mutex> lock(m_QueueMutex);
 
-            if (m_Stop || m_Workers.empty())
-                return false;
+            if (m_Stop)
+                return ErrorCode::ThreadPoolStopped;
+
+            if (m_Workers.empty())
+                return ErrorCode::NotInitialized;
 
             m_Tasks.push(task);
         }
 
         m_Condition.notify_one();
 
-        return true;
+        return ErrorCode::None;
     }
 
-    bool ThreadPool::Submit(Runnable& runnable)
+    ReturnCode ThreadPool::Submit(Runnable& runnable)
     {
         return Submit([&runnable]() { runnable.Run(); });
     }

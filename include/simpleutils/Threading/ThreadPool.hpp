@@ -21,9 +21,9 @@ namespace simpleutils::Threading
             ThreadPool(const ThreadPool&) = delete;
             ThreadPool& operator=(const ThreadPool&) = delete;
 
-            bool Create(std::size_t poolSize);
-            bool Submit(const Callback& task);
-            bool Submit(Runnable& runnable);
+            Common::ReturnCode Create(std::size_t poolSize);
+            Common::ReturnCode Submit(const Callback& task);
+            Common::ReturnCode Submit(Runnable& runnable);
             void Stop();
 
         private:

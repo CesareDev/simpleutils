@@ -4,15 +4,21 @@
 
 namespace simpleutils::Threading
 {
+    using Common::ErrorCode;
+    using Common::ReturnCode;
+
     Thread::~Thread()
     {
         Join();
     }
 
-    bool Thread::Start(const Callback& callback)
+    ReturnCode Thread::Start(const Callback& callback)
     {
+        if (!callback)
+            return ErrorCode::InvalidArgument;
+
         if (m_Thread.joinable() || !callback)
-            return false;
+            return ErrorCode::ThreadAlreadyRunning;
 
         m_IsRunning = true;
 
@@ -27,21 +33,35 @@ namespace simpleutils::Threading
         catch (...)
         {
             m_IsRunning = false;
-            return false;
+            return ErrorCode::ThreadCreationFailed;
         }
 
-        return true;
+        return ErrorCode::None;
     }
 
-    bool Thread::Start(Runnable& runnable)
+    ReturnCode Thread::Start(Runnable& runnable)
     {
         return Start([&runnable] { runnable.Run(); });
     }
 
-    void Thread::Join()
+    ReturnCode Thread::Join()
     {
-        if (m_Thread.joinable())
+        if (!m_Thread.joinable())
+            return ErrorCode::ThreadNotRunning;
+
+        if (m_Thread.get_id() == std::this_thread::get_id())
+            return ErrorCode::InvalidState;
+
+        try
+        {
             m_Thread.join();
+        }
+        catch(const std::system_error& e)
+        {
+            return ErrorCode::Unknown;
+        }
+
+        return ErrorCode::None;
     }
 
     bool Thread::IsRunning() const

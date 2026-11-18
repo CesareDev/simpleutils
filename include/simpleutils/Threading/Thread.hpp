@@ -3,6 +3,7 @@
 #define SIMPLEUTILS_THREAD_HPP
 
 #include <simpleutils/Threading/Runnable.hpp>
+#include <simpleutils/Common/ReturnCode.hpp>
 
 #include <thread>
 #include <functional>
@@ -22,9 +23,9 @@ namespace simpleutils::Threading
             Thread(const Thread&) = delete;
             Thread& operator=(const Thread&) = delete;
 
-            bool Start(const Callback& callback);
-            bool Start(Runnable& runnable);
-            void Join();
+            Common::ReturnCode Start(const Callback& callback);
+            Common::ReturnCode Start(Runnable& runnable);
+            Common::ReturnCode Join();
 
             bool IsRunning() const;
             bool IsJoinable() const;

@@ -5,6 +5,7 @@ project(simpleutils)
 
 set(LIB_SRC_FILE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Common/Logger.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Common/ReturnCode.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Config/Loader.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Config/IniLoader.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Config/JsonLoader.cpp

@@ -267,17 +267,9 @@ namespace simpleutils::Net
 
         while (totalPayload < payloadSize)
         {
-            std::size_t toReceive = std::min(
-                sizeof(data),
-                static_cast<std::size_t>(payloadSize) - totalPayload
-            );
+            std::size_t toReceive = std::min(sizeof(data), static_cast<std::size_t>(payloadSize) - totalPayload);
 
-            ssize_t received = ::recv(
-                m_FileDescriptor,
-                data,
-                toReceive,
-                0
-            );
+            ssize_t received = ::recv(m_FileDescriptor, data, toReceive, 0);
 
             if (received < 0)
             {
@@ -320,12 +312,7 @@ namespace simpleutils::Net
 
         do
         {
-            received = ::recv(
-                m_FileDescriptor,
-                buffer,
-                capacity,
-                0
-            );
+            received = ::recv(m_FileDescriptor, buffer, capacity, 0);
         }
         while (received < 0 && errno == EINTR);
 

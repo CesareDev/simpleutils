@@ -13,6 +13,9 @@ namespace simpleutils::Net
             UdpSocket() = default;
             ~UdpSocket() override = default;
 
+            UdpSocket(UdpSocket&& other) noexcept = default;
+            UdpSocket& operator=(UdpSocket&& other) noexcept = default;
+
             bool Bind(const std::string& address, int port);
             bool SetDestination(const std::string& address, int port);
 
